@@ -64,13 +64,13 @@ function add(num1, num2) {
         return num1;
 }
 ;
-console.log(add(5));
+// console.log(add(5));
 function fullName(person) {
-    console.log(person.firstName + " " + person.lastName);
+    //console.log(`${person.firstName} ${person.lastName}`);
 }
 // basically make a reusable 'type' using interface. cleaner code  
 function fullNameWithInterface(person) {
-    console.log(person.firstName + " " + person.lastName);
+    // console.log(`${person.firstName} ${person.lastName}`);
 }
 var p = {
     firstName: 'Bruce',
@@ -83,7 +83,7 @@ var Employee = /** @class */ (function () {
         this.employeeName = name;
     }
     Employee.prototype.greet = function () {
-        console.log("Good morning " + this.employeeName);
+        //console.log(`Good morning ${this.employeeName}`)
     };
     return Employee;
 }());
@@ -96,7 +96,7 @@ var Manager = /** @class */ (function (_super) {
         return _super.call(this, managerName) || this;
     }
     Manager.prototype.delegateWork = function () {
-        console.log("manager delegateing task");
+        //console.log(`manager delegateing task`)
     };
     return Manager;
 }(Employee));
@@ -111,10 +111,42 @@ var Dog = /** @class */ (function () {
         this.dogName = name;
     }
     Dog.prototype.callName = function () {
-        console.log(this.dogName);
+        //console.log(this.dogName)
     };
     return Dog;
 }());
 var d = new Dog('Fido');
 // this WONT work outside of class if private ---- console.log(d.dogName)
 d.callName(); //this WILL work because function is inside class
+// Alternate way of initializing fields in the constructor and also using 'get' and 'set' properties to get protected info outside of class
+var Cat = /** @class */ (function () {
+    //optional name field. Also convention to add underscore to differintiate from property names
+    function Cat(_name) {
+        this._name = _name;
+    }
+    Object.defineProperty(Cat.prototype, "name", {
+        get: function () {
+            console.log("Current Name: " + this._name);
+            return this._name;
+        },
+        // useful for performing some kind of validation if user is allowed to change values
+        set: function (value) {
+            if (value.length < 2)
+                throw new Error('Must be a longer than one character');
+            this._name = value;
+            console.log("Name changed to: " + this._name);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    ;
+    return Cat;
+}());
+var eric = new Cat();
+//can now access private name outside of class using Name property
+eric.name;
+eric.name = 'Jason';
+eric.name;
+eric.name = 'a';
+eric.name;

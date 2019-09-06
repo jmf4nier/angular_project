@@ -58,14 +58,14 @@ function add(num1?: number, num2: number = 10): number {
     else
         return num1
 };
-console.log(add(5));
+// console.log(add(5));
 
 function fullName(person: {firstName: string, lastName: string}){
-    console.log(`${person.firstName} ${person.lastName}`);
+    //console.log(`${person.firstName} ${person.lastName}`);
 }
 // basically make a reusable 'type' using interface. cleaner code  
 function fullNameWithInterface(person: Person){
-    console.log(`${person.firstName} ${person.lastName}`);
+    // console.log(`${person.firstName} ${person.lastName}`);
 
 }
 
@@ -89,7 +89,7 @@ class Employee {
     }
 
     greet(){
-        console.log(`Good morning ${this.employeeName}`)
+        //console.log(`Good morning ${this.employeeName}`)
     }
 }
 
@@ -103,7 +103,7 @@ class Manager extends Employee {
         super(managerName)
     }
     delegateWork(){
-        console.log(`manager delegateing task`)
+        //console.log(`manager delegateing task`)
     }
 }
 let m1 = new Manager('Henry')
@@ -120,9 +120,35 @@ class Dog{
         this.dogName = name
     }
     callName(){
-        console.log(this.dogName)
+        //console.log(this.dogName)
     }
 }
 let d = new Dog('Fido')
 // this WONT work outside of class if private ---- console.log(d.dogName)
 d.callName()  //this WILL work because function is inside class
+
+// Alternate way of initializing fields in the constructor and also using 'get' and 'set' properties to get protected info outside of class
+class Cat{
+    //optional name field. Also convention to add underscore to differintiate from property names
+    constructor(private _name?: string){
+    }
+    get name(){
+        console.log(`Current Name: ` + this._name);
+        return this._name;
+    };
+
+    // useful for performing some kind of validation if user is allowed to change values
+    set name(value){
+        if (value.length < 2)
+            throw new Error('Must be a longer than one character');
+        this._name = value;
+        console.log(`Name changed to: ` + this._name)
+    };
+}
+let eric = new Cat()
+//can now access private name outside of class using Name property
+eric.name
+eric.name = 'Jason'
+eric.name
+eric.name =  'a'
+eric.name
